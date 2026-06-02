@@ -17,14 +17,10 @@
  *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "MicroBooNE_CC1Mu1p_XSec_1D_nu.h"
-#include "MicroBooNE_SignalDef.h"
-
-#include "TH1D.h"
-#include "TH2D.h"
+#include "MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu.h"
 
 //********************************************************************
-MicroBooNE_CC1Mu1p_XSec_1D_nu::MicroBooNE_CC1Mu1p_XSec_1D_nu(
+MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu::MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu(
     nuiskey samplekey) {
   //********************************************************************
   fSettings = LoadSampleSettings(samplekey);
@@ -32,67 +28,71 @@ MicroBooNE_CC1Mu1p_XSec_1D_nu::MicroBooNE_CC1Mu1p_XSec_1D_nu(
   std::string name = fSettings.GetS("name");
   std::string objSuffix;
 
-  // work out which sample you need, and set axii
-  if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaPT_nu")) {
+  // work out which sample you need, and set axis
+  if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaPT_nu")) {
     fDist = kDeltaPT;
     objSuffix = "DeltaPT";
     fSettings.SetXTitle("#deltap_{T} (GeV/c)");
     fSettings.SetYTitle("d#sigma/d#deltap_{T} (cm^{2}/(GeV/c)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaAlphaT_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaAlphaT_nu")) {
     fDist = kDeltaAlphaT;
     objSuffix = "DeltaAlphaT";
     fSettings.SetXTitle("#delta#alpha_{T} (deg)");
     fSettings.SetYTitle("d#sigma/d#delta#alpha_{T} (cm^{2}/(deg)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaPhiT_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaPhiT_nu")) {
     fDist = kDeltaPhiT;
     objSuffix = "DeltaPhiT";
     fSettings.SetXTitle("#delta#phi_{T} (deg)");
     fSettings.SetYTitle("d#sigma/d#delta#phi_{T} (cm^{2}/(deg)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DMuonCosTheta_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DMuonCosTheta_nu")) {
     fDist = kMuonCosTheta;
     objSuffix = "MuonCosTheta";
     fSettings.SetXTitle("cos#theta_{#mu} (deg)");
     fSettings.SetYTitle("d#sigma/dcos#theta_{#mu} (cm^{2}/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DProtonCosTheta_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DProtonCosTheta_nu")) {
     fDist = kProtonCosTheta;
     objSuffix = "ProtonCosTheta";
     fSettings.SetXTitle("cos#theta_{p} (deg)");
     fSettings.SetYTitle("d#sigma/dcos#theta_{p} (cm^{2}/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DMuonMomentum_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DMuonMomentum_nu")) {
     fDist = kMuonMomentum;
     objSuffix = "MuonMomentum";
     fSettings.SetXTitle("p_{#mu} (GeV/c)");
     fSettings.SetYTitle("d#sigma/dp_{#mu} (cm^{2}/(GeV/c)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaPn_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaPn_nu")) {
     fDist = kDeltaPn;
     objSuffix = "DeltaPn";
     fSettings.SetXTitle("p_{n,proxy} (GeV/c)");
     fSettings.SetYTitle("d#sigma/dp_{n,proxy} (cm^{2}/(GeV/c)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaPtx_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaPtx_nu")) {
     fDist = kDeltaPtx;
     objSuffix = "DeltaPtx";
     fSettings.SetXTitle("#deltap_{T,x} (GeV/c)");
     fSettings.SetYTitle("d#sigma/d#deltap_{T,x} (cm^{2}/(GeV/c)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DDeltaPty_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DDeltaPty_nu")) {
     fDist = kDeltaPty;
     objSuffix = "DeltaPty";
     fSettings.SetXTitle("#deltap_{T,y} (GeV/c)");
     fSettings.SetYTitle("d#sigma/d#deltap_{T,y} (cm^{2}/(GeV/c)/^{40}Ar)");
-  } else if (!name.compare("MicroBooNE_CC1Mu1p_XSec_1DECal_nu")) {
+  } else if (!name.compare("MicroBooNE_BNB_NumuCC1p_2023_XSec_1DECal_nu")) {
     fDist = kECal;
     objSuffix = "ECal";
     fSettings.SetXTitle("E^{Cal} (GeV)");
     fSettings.SetYTitle("d#sigma/dE^{Cal} (cm^{2}/(GeV)/^{40}Ar)");
   } else {
     NUIS_ABORT(
-        "MicroBooNE_CC1Mu1p_XSec_1D_nu: Didn’t get a valid name: " << name);
+        "MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu: Didn’t get a valid name: " << name);
   }
 
   // Sample overview ---------------------------------------------------
   std::string descrip = name + " sample.\n"
                                "Target: Ar\n"
                                "Flux: BNB FHC numu\n"
-                               "Signal: CC1Mu1p\n";
+                               "Signal: CC1Mu1p\n"
+                               "Contact: microboone_info@fnal.gov\n"
+                               "Reference: Phys. Rev. Lett 131, 101802 (2023), Phys. Rev. D 108, 053002 (2023)\n"
+                               "DOI: https://doi.org/10.1103/PhysRevLett.131.101802, https://doi.org/10.1103/PhysRevD.108.053002\n";
+
   fSettings.SetDescription(descrip);
   fSettings.SetTitle(name);
   fSettings.SetAllowedTypes("FULL,DIAG/FREE,SHAPE,FIX/SYSTCOV/STATCOV",
@@ -104,7 +104,7 @@ MicroBooNE_CC1Mu1p_XSec_1D_nu::MicroBooNE_CC1Mu1p_XSec_1D_nu(
 
   // Load data ---------------------------------------------------------
   std::string inputFile = FitPar::GetDataBase() +
-              "/MicroBooNE/CC1Mu1p/All_XSecs_Combined_v08_00_00_52.root";
+              "/MicroBooNE/BNB_NumuCC1p_2023/All_XSecs_Combined_v08_00_00_52.root";
   SetDataFromRootFile(inputFile, "FullUnc_" + objSuffix + "Plot");
   ScaleData(1E-38);
 
@@ -138,11 +138,48 @@ MicroBooNE_CC1Mu1p_XSec_1D_nu::MicroBooNE_CC1Mu1p_XSec_1D_nu(
   FinaliseMeasurement();
 }
 
-bool MicroBooNE_CC1Mu1p_XSec_1D_nu::isSignal(FitEvent *event) {
-  return SignalDef::MicroBooNE::isCC1Mu1p(event, EnuMin, EnuMax);
+std::vector<FitParticle*> MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu::GetCC1Mu1pProtonsInPS(FitEvent* event){
+  std::vector<FitParticle*> protons_in_ps;
+  for (auto proton : event->GetAllFSParticle(2212)) {
+    double mom = proton->p();
+    if (mom > 300 && mom < 1000) { protons_in_ps.push_back(proton); }
+  }
+  return protons_in_ps;
 }
 
-void MicroBooNE_CC1Mu1p_XSec_1D_nu::FillEventVariables(FitEvent *event) {
+bool MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu::isCC1pSignal(FitEvent *event, double EnuMin, double EnuMax) {
+  // Check CC inclusive
+  if (!SignalDef::isCCINC(event, 14, EnuMin, EnuMax)) return false;
+
+  // Veto events which don't have exactly 1 FS muon
+  if (event->NumFSMuon() != 1) return false;
+
+  // Muon momentum range
+  auto mu_mom = event->GetHMFSParticle(13)->p();
+  if ((mu_mom < 100) || (mu_mom > 1200)) return false;
+
+  // Check for only a single proton in the momentum PS
+  if (GetCC1Mu1pProtonsInPS(event).size() != 1) { return false; }
+
+  // Reject events with neutral pions of any momenta
+  if (event->NumFSParticle(111) != 0) return false;
+
+  // Reject events with positively charged pions above 70 MeV/c
+  if (event->NumFSParticle(211) != 0) {
+    double ppiplus = event->GetHMFSParticle(211)->p();
+    if (ppiplus > 70) { return false; }
+  }
+
+  // Reject events with negatively charged pions above 70 MeV/c
+  if (event->NumFSParticle(-211) != 0) {
+    double ppiminus = event->GetHMFSParticle(-211)->p();
+    if (ppiminus > 70) { return false; }
+  }
+
+  return true;
+}
+
+void MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu::FillEventVariables(FitEvent *event) {
 
   if (!isSignal(event)) { // double the work, but it lets us use the below
                           // functions without error checking
@@ -150,8 +187,7 @@ void MicroBooNE_CC1Mu1p_XSec_1D_nu::FillEventVariables(FitEvent *event) {
     return;
   }
 
-  auto const &signal_proton =
-      *SignalDef::MicroBooNE::GetCC1Mu1pProtonsInPS(event).front();
+  auto const &signal_proton = *GetCC1Mu1pProtonsInPS(event).front();
   TVector3 vpmu = event->GetHMFSParticle(13)->P3();
 
   // using definitions in
@@ -294,7 +330,7 @@ void MicroBooNE_CC1Mu1p_XSec_1D_nu::FillEventVariables(FitEvent *event) {
   }
 }
 
-void MicroBooNE_CC1Mu1p_XSec_1D_nu::ConvertEventRates() {
+void MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu::ConvertEventRates() {
 
   // Apply Weiner-SVD additional smearing Ac
   int n = fMCHist->GetNbinsX();

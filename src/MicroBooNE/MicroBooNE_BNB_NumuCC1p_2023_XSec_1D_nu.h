@@ -16,35 +16,58 @@
 *    You should have received a copy of the GNU General Public License
 *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-#ifndef MICROBOONE_CC1MUNP_1D_NU_H_SEEN
-#define MICROBOONE_CC1MUNP_1D_NU_H_SEEN
+#ifndef MICROBOONE_CC1MU1P_1D_NU_H_SEEN
+#define MICROBOONE_CC1MU1P_1D_NU_H_SEEN
 
+#include <TMatrixDfwd.h>
 #include "Measurement1D.h"
 
-class TH2D;
+#include <iostream>
+#include <fstream>
 
-class MicroBooNE_CC1MuNp_XSec_1D_nu : public Measurement1D {
+class TH2D;
+class FitEvent;
+
+class MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu : public Measurement1D {
 public:
   /// Basic Constructor.
-  MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey);
+  MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu(nuiskey samplekey);
 
   /// Virtual Destructor
-  ~MicroBooNE_CC1MuNp_XSec_1D_nu() {};
+  ~MicroBooNE_BNB_NumuCC1p_2023_XSec_1D_nu() {};
+
+  /// NumuCC1p signal definition helpers
+  static std::vector<FitParticle*> GetCC1Mu1pProtonsInPS(FitEvent* event);
+  static bool isCC1pSignal(FitEvent* event, double EnuMin, double EnuMax);
 
   /// Apply signal definition
-  bool isSignal(FitEvent* nvect);
+  bool isSignal(FitEvent* event) {
+    return isCC1pSignal(event, EnuMin, EnuMax);
+  }
 
   /// Fill kinematic distributions
   void FillEventVariables(FitEvent* customEvent);
 
-  /// Smear and build 1D MC histogram from slices
+  /// Additional smearing matrix multiplication by Ac
   void ConvertEventRates();
 
 private:
-  TH2D* fSmearingMatrix;
-  enum Distribution { kPmu, kPp, kCosMu, kCosP, kThetaMuP };
+  TMatrixD* fSmearingMatrix;
+  enum Distribution { kDeltaPT=0, 
+    kDeltaAlphaT=1, 
+    kDeltaPhiT=2, 
+    kMuonCosTheta=3, 
+    kProtonCosTheta=4, 
+    kMuonMomentum=5, 
+    kProtonMomentum=6, 
+    kDeltaPn=7, 
+    kDeltaPtx=8, 
+    kDeltaPty=9, 
+    kECal=10, 
+    kEQE=11 };
+
   Distribution fDist;
+
 };
 
 #endif
-

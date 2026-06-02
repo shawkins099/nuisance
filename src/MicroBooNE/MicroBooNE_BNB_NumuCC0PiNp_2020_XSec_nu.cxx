@@ -17,42 +17,41 @@
 *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-#include "MicroBooNE_CC1MuNp_XSec_1D_nu.h"
-#include "MicroBooNE_SignalDef.h"
+#include "MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu.h"
 #include "TH2D.h"
 
 //********************************************************************
-MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) {
+MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu::MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu(nuiskey samplekey) {
 //********************************************************************
   fSettings = LoadSampleSettings(samplekey);
   std::string name = fSettings.GetS("name");
   std::string objSuffix;
 
-  if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPmu_nu")) {
+  if (!name.compare("MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_1DPmu_nu")) {
     fDist = kPmu;
     objSuffix = "mumom";
     fSettings.SetXTitle("P_{#mu}^{reco} (GeV)");
     fSettings.SetYTitle("d#sigma/dP_{#mu}^{reco} (cm^{2}/^{40}Ar)");
   }
-  else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu")) {
+  else if (!name.compare("MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_1Dcosmu_nu")) {
     fDist = kCosMu;
     objSuffix = "muangle";
     fSettings.SetXTitle("cos#theta_{#mu}^{reco}");
     fSettings.SetYTitle("d#sigma/dcos#theta_{#mu}^{reco} (cm^{2}/^{40}Ar)");
   }
-  else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPp_nu")) {
+  else if (!name.compare("MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_1DPp_nu")) {
     fDist = kPp;
     objSuffix = "pmom";
     fSettings.SetXTitle("P_{p}^{reco} (GeV)");
     fSettings.SetYTitle("d#sigma/dP_{p}^{reco} (cm^{2}/GeV/^{40}Ar)");
   }
-  else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu")) {
+  else if (!name.compare("MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_1Dcosp_nu")) {
     fDist = kCosP;
     objSuffix = "pangle";
     fSettings.SetXTitle("cos#theta_{p}^{reco}");
     fSettings.SetYTitle("d#sigma/dcos#theta_{p}^{reco} (cm^{2}/^{40}Ar)");
   }
-  else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
+  else if (!name.compare("MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_1Dthetamup_nu")) {
     fDist = kThetaMuP;
     objSuffix = "thetamup";
     fSettings.SetXTitle("#theta_{#mup}^{reco}");
@@ -66,7 +65,10 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
   std::string descrip = name + " sample.\n" \
                         "Target: Ar\n" \
                         "Flux: BNB FHC numu\n" \
-                        "Signal: CC1MuNp\n";
+                        "Signal: CC1MuNp\n"
+                        "Contact: microboone_info@fnal.gov\n"
+                        "Reference: Phys. Rev. D 102, 112013 (2020)\n"
+                        "DOI: https://doi.org/10.1103/PhysRevD.102.112013\n";
 
   fSettings.SetDescription(descrip);
   fSettings.SetTitle(name);
@@ -77,7 +79,7 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
   FinaliseSampleSettings();
 
   // Load data ---------------------------------------------------------
-  std::string inputFile = FitPar::GetDataBase() + "/MicroBooNE/CC1MuNp/CCNp_data_MC_cov_dataRelease.root";
+  std::string inputFile = FitPar::GetDataBase() + "/MicroBooNE/BNB_NumuCC0PiNp_2020/CCNp_data_MC_cov_dataRelease.root";
   SetDataFromRootFile(inputFile, "DataXsec_" + objSuffix);
   // Strangely, the data release is in xsec/nucleon but the paper is in xsec/40Ar nucleus, so scale up by 40 (number of nucleons in 40Ar)
   ScaleData(40.0*1E-38);
@@ -120,12 +122,35 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
 };
 
 
-bool MicroBooNE_CC1MuNp_XSec_1D_nu::isSignal(FitEvent* event) {
-  return SignalDef::MicroBooNE::isCC1MuNp(event, EnuMin, EnuMax);
-};
+bool MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu::isSignal(FitEvent* event) {
+  // Check CC inclusive
+  if (!SignalDef::isCCINC(event, 14, EnuMin, EnuMax)) return false;
+
+  // Veto events which don't have exactly 1 FS muon
+  if (event->NumFSMuon() != 1) return false;
+
+  // Veto events with FS mesons
+  if (event->NumFSPions() != 0) return false;
+
+  // Veto events with FS electrons
+  if (event->NumFSElectron() != 0) return false;
+
+  // Veto events with FS photons
+  if (event->NumFSPhoton() != 0) return false;
+
+  // Muon momentum above threshold
+  if (event->GetHMFSParticle(13)->fP.Vect().Mag() < 100) return false;
+
+  // Leading proton within momentum range
+  if (event->NumFSParticle(2212) == 0) return false;
+  double plead = event->GetHMFSParticle(2212)->fP.Vect().Mag();
+  if (plead > 300 && plead < 1200) return true;
+
+  return false;
+}
 
 
-void MicroBooNE_CC1MuNp_XSec_1D_nu::FillEventVariables(FitEvent* event) {
+void MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu::FillEventVariables(FitEvent* event) {
   if (fDist == kPmu) {
     if (event->NumFSParticle(13) == 0) return;
     fXVar = event->GetHMFSParticle(13)->fP.Vect().Mag() / 1000;
@@ -152,7 +177,7 @@ void MicroBooNE_CC1MuNp_XSec_1D_nu::FillEventVariables(FitEvent* event) {
 }
 
 
-void MicroBooNE_CC1MuNp_XSec_1D_nu::ConvertEventRates() {
+void MicroBooNE_BNB_NumuCC0PiNp_2020_XSec_nu::ConvertEventRates() {
   // Do standard conversion
   Measurement1D::ConvertEventRates();
 
