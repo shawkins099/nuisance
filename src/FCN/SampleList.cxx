@@ -193,6 +193,7 @@
 #include "MicroBooNE_BNB_NCpi0_2024_XSec_nu.h"
 #include "MicroBooNE_BNB_NumuCC0PiNp_2025_XSec_nu.h"
 #include "MicroBooNE_BNB_NumuCC0Pi_2025_XSec_nu.h"
+#include "MicroBooNE_BNB_NumuCC1pi0_2024_XSec_1D_nu.h"
 #endif
 
 #ifdef MINERvA_ENABLED
